@@ -22,8 +22,24 @@ module.exports.index = async (req, res) => {
     }
     // Hết Sắp xếp
     
+    // Phân trang
+    let limitItems = 2;
+    if (req.query.limitItems) {
+        limitItems = parseInt(req.query.limitItems);
+    }
+    let page = 1;
+    if (req.query.page) {
+        page = parseInt(req.query.page);
+    }
 
-    const tasks = await Task.find(find).sort(sort);
+    const skip = (page - 1) * limitItems;
+    // Hết Phân trang
+
+    const tasks = await Task
+        .find(find)
+        .limit(limitItems)
+        .skip(skip)
+        .sort(sort);
 
     res.json(tasks);
 }
