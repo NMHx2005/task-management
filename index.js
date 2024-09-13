@@ -3,38 +3,16 @@ require('dotenv').config();
 
 //  Import module cấu hình cơ sở dữ liệu từ file database.js trong thư mục config.
 const database = require("./config/database");
+
+const routesApi = require("./routes/client/index.route");
+
 // Gọi phương thức connect() từ module cơ sở dữ liệu đã import để kết nối với cơ sở dữ liệu.
 database.connect();
 
 const app = express();
 const port = process.env.PORT;
 
-const Task = require("./models/task.model");
-
-app.get('/tasks', async (req, res) => {
-    const tasks = await Task.find({
-        deleted: false
-    })
-    res.json(tasks);
-});
-
-
-app.get('/tasks/detail/:id', async (req, res) => {
-    try {
-        const id = req.params.id;
-    
-        const task = await Task.findOne({
-            _id: id,
-            deleted: false
-        })
-        res.json(task);
-    } catch (error) {
-        res.json({
-            message: "Not Found"
-        })
-    }
-});
-
+routesApi(app);
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
