@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 require('dotenv').config();
 
 //  Import module cấu hình cơ sở dữ liệu từ file database.js trong thư mục config.
@@ -11,6 +12,9 @@ database.connect();
 
 const app = express();
 const port = process.env.PORT;
+
+// parse application/json
+app.use(bodyParser.json());
 
 routesApi(app);
 
